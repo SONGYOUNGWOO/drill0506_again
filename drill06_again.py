@@ -84,7 +84,7 @@ def update_world():
     global t
 
     frame = (frame + 1) % 8
-    delay(0.02)
+    delay(0.01)
 
     if target_exists:
         if t <= 1.0:
@@ -96,6 +96,8 @@ def update_world():
             del points[0]  # 목표지점에 도달, 필요 없는 점 삭제
             set_new_target_arrow()
 
+    elif points: # 목표 지점이 없는 상황에서, 새로운 목표 지점이 들어옴
+        set_new_target_arrow()
 
 open_canvas(TUK_WIDTH, TUK_HEIGHT)
 hide_cursor()
