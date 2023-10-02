@@ -23,6 +23,8 @@ def handle_events():
             running = False
         elif event.type == SDL_MOUSEMOTION:
             mx, my = event.x, TUK_HEIGHT - 1 - event.y
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT: # 마우스 클릭이 있으면
+            points.append((event.x, TUK_HEIGHT - 1 - event.y)) #클릭된 위치를 새로운 점으로 추가
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
     pass
@@ -41,7 +43,7 @@ def reset_world():
     frame = 0
     action = 3
 
-    points = [(100, 900), (200, 600), (500, 500)]
+    points = [ ]
     set_new_target_arrow()
 
 
@@ -62,6 +64,7 @@ def set_new_target_arrow():
     else:
         action = 3 if action == 1 else 2  # 이전에 소년이 우측으로 이동 중이였으면, IDLE 동작시 우측을 바라보도록
         frame = 0
+        target_exists = False
 
 
 def render_world():
