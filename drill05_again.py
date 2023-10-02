@@ -62,6 +62,7 @@ def update_world():
     global t
 
     frame = (frame + 1) % 8
+    delay(0.02)
 
     if t <= 1.0:
         cx = (1 - t) * sx + t * hx  # cx는 시작 x와 끝 x를 1-t:t 비율로 섞은 위치
