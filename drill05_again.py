@@ -27,14 +27,24 @@ x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
 frame = 0
 hide_cursor()
 
-while running:
+
+def render_world():
     clear_canvas()
     TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
     character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
     update_canvas()
+
+
+def update_world():
+    global frame
     frame = (frame + 1) % 8
 
-    handle_events()
+
+while running:
+    render_world() # 월드에 현재 내용을 그린다.
+    handle_events() # 사용자의 입력을 받아드린다.
+    update_world() # 월드 안의 객체들의 상호작용을 계산하고 그 결과를 update한다.
+
 
 close_canvas()
 
