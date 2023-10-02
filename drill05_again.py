@@ -1,10 +1,12 @@
 from pico2d import *
 
 TUK_WIDTH, TUK_HEIGHT = 1280, 1024
-open_canvas(TUK_WIDTH, TUK_HEIGHT)
 
-TUK_ground = load_image('TUK_GROUND.png')
-character = load_image('animation_sheet.png')
+
+def load_resources():
+    global TUK_ground, character
+    TUK_ground = load_image('TUK_GROUND.png')
+    character = load_image('animation_sheet.png')
 
 
 def handle_events():
@@ -21,11 +23,11 @@ def handle_events():
     pass
 
 
-
-running = True
-x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
-frame = 0
-hide_cursor()
+def reset_world():
+    global running, x, y, frame
+    running = True
+    x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
+    frame = 0
 
 
 def render_world():
@@ -40,14 +42,14 @@ def update_world():
     frame = (frame + 1) % 8
 
 
-while running:
-    render_world() # 월드에 현재 내용을 그린다.
-    handle_events() # 사용자의 입력을 받아드린다.
-    update_world() # 월드 안의 객체들의 상호작용을 계산하고 그 결과를 update한다.
+open_canvas(TUK_WIDTH, TUK_HEIGHT)
+hide_cursor()
+load_resources()
+reset_world()
 
+while running:
+    render_world()  # 월드에 현재 내용을 그린다.
+    handle_events()  # 사용자의 입력을 받아드린다.
+    update_world()  # 월드 안의 객체들의 상호작용을 계산하고 그 결과를 update한다.
 
 close_canvas()
-
-
-
-
