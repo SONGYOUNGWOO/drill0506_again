@@ -41,7 +41,7 @@ def reset_world():
     frame = 0
     action = 3
 
-    points = [(100, 900), (200, 600), (500, 100)]
+    points = [(100, 900), (200, 600), (500, 500)]
     set_new_target_arrow()
 
 
@@ -49,11 +49,19 @@ def set_new_target_arrow():
     global sx, sy, hx, hy, t
     global action
     global frame
-    sx, sy = cx, cy  # p1 시작점
-    hx, hy = points[0]  # p2 끝점
-    t = 0.0
-    action = 1 if sx < hx else 0  # python에서 많이씀
-    frame = 0
+    global target_exists
+
+    # if len(points) > 0: #points 리스트안에 남아있는 점이 있으면
+    if points:
+        sx, sy = cx, cy  # p1 시작점
+        hx, hy = points[0]  # p2 끝점
+        t = 0.0
+        action = 1 if sx < hx else 0  # python에서 많이씀
+        frame = 0
+        target_exists = True
+    else:
+        action = 3 if action == 1 else 2  # 이전에 소년이 우측으로 이동 중이였으면, IDLE 동작시 우측을 바라보도록
+        frame = 0
 
 
 def render_world():
@@ -75,13 +83,15 @@ def update_world():
     frame = (frame + 1) % 8
     delay(0.02)
 
-    if t <= 1.0:
-        cx = (1 - t) * sx + t * hx  # cx는 시작 x와 끝 x를 1-t:t 비율로 섞은 위치
-        cy = (1 - t) * sy + t * hy
-        t += 0.01
-    else:
-        cx, cy = hx, hy # 캐릭터 위치를 목적지 위치와 정확히 일치시킴
-        set_new_target_arrow()
+    if target_exists:
+        if t <= 1.0:
+            cx = (1 - t) * sx + t * hx  # cx는 시작 x와 끝 x를 1-t:t 비율로 섞은 위치
+            cy = (1 - t) * sy + t * hy
+            t += 0.01
+        else:  # 목표 지점에 도달하면
+            cx, cy = hx, hy  # 캐릭터 위치를 기존 목적지 위치와 정확히 일치시킴
+            del points[0]  # 목표지점에 도달, 필요 없는 점 삭제
+            set_new_target_arrow()
 
 
 open_canvas(TUK_WIDTH, TUK_HEIGHT)
